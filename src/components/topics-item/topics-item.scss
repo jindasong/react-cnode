@@ -1,0 +1,15 @@
+.topics-item {
+  margin-bottom: 10px;
+  cursor: pointer;
+  &__content {
+    margin-bottom: 10px;
+  }
+  &__info {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    > * {
+      margin: 0 5px;
+    }
+  }
+}
