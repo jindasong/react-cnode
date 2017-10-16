@@ -22,6 +22,7 @@ class Home extends Component {
     }
   }
   componentDidMount () {
+    this._isMounted = true;
     this.init();
   }
   init () {
@@ -76,7 +77,7 @@ class Home extends Component {
   fetchTopicsList (page) {
     let tab = this.search.tab || '';
     if (this.state.isLoading) return;
-    this.setState({
+    this._isMounted && this.setState({
       isLoading: true
     });
     Api.topics.fetchList({
@@ -87,7 +88,7 @@ class Home extends Component {
     })
       .then(res => {
         let { data } = res;
-        this.setState({
+        this._isMounted && this.setState({
           topicsList: page <= 1
             ? data
             : this.state.topicsList.concat(data),
@@ -138,7 +139,10 @@ class Home extends Component {
                 replyCount={ item.reply_count }
                 visitCount={ item.visit_count }
                 date={ Moment(item.create_at).format('YYYY-MM-DD HH:mm:SS') }
-                content={ Utils.delHtmlTag(item.content).substr(0, 200) + '...'}>
+                content={ Utils.delHtmlTag(item.content).substr(0, 200) + '...'}
+                onClick={() => {
+                  this.props.history.push(`/topics/details/${ item.id }`)
+                }}>
               </TopicsItem>
             )
           }) }
@@ -146,7 +150,7 @@ class Home extends Component {
         {
           this.state.isLoading
             ? <Spin/>
-            : ''
+            : null
         }
       </Layout>
     );
@@ -158,6 +162,9 @@ class Home extends Component {
       let page = this.topicsParams.page = 1;
       this.fetchTopicsList(page);
     }
+  }
+  componentWillUnmount () {
+    this._isMounted = false;
   }
 }
 

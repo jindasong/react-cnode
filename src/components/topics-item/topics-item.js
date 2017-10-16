@@ -7,7 +7,7 @@ class TopicsItem extends Component {
   render () {
     let { props } = this;
     return (
-      <li className="topics-item">
+      <li className="topics-item" onClick={ this.props.onClick }>
         <Card
           title={ props.title }
           extra={ `发布时间：${props.date} 回复数：${ props.replyCount } 浏览数：${ props.visitCount }` }>
